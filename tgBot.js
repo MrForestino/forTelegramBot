@@ -1,7 +1,14 @@
 import TelegramBot from "node-telegram-bot-api";
 import { supabase } from "./supabase.js";
+import express from "express";
+
+
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 const TOKEN = process.env.BOT_TOKEN;
+
+
 const CHANNEL_ID = "@tgchanel_fortest";
 const bot = new TelegramBot(TOKEN, { polling: true });
 
@@ -31,4 +38,12 @@ bot.on("callback_query", async (query) => {
   }
 
   bot.answerCallbackQuery(query.id, { text: "✅Вы зарегистрированы!" });
+});
+
+app.get("/", (req, res) => {
+  res.send("✅ Telegram bot is running on Render!");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
