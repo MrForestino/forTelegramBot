@@ -1,17 +1,17 @@
 import TelegramBot from "node-telegram-bot-api";
 import { supabase } from "./supabase.js";
 
-const TOKEN = "8434812242:AAHMguh1lLiH2kiuARLUKwTrCdM__oGlDfM";
+const TOKEN = process.env.BOT_TOKEN;
 const CHANNEL_ID = "@tgchanel_fortest";
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 bot.sendMessage(
   CHANNEL_ID,
-  "🎉 Розіграш! Натисни кнопку, щоб взяти участь:",
+  "🎉 Розыгрыш! Нажми кнопку, чтобы принять участие:",
   {
     reply_markup: {
       inline_keyboard: [
-        [{ text: "Взяти участь ✅", callback_data: "participate" }]
+        [{ text: "Принять участие ✅", callback_data: "participate" }]
       ]
     }
   }
@@ -30,5 +30,5 @@ bot.on("callback_query", async (query) => {
     console.error(error);
   }
 
-  bot.answerCallbackQuery(query.id, { text: "✅ Ви зареєстровані!" });
+  bot.answerCallbackQuery(query.id, { text: "✅Вы зарегистрированы!" });
 });
