@@ -1,8 +1,9 @@
 import TelegramBot from "node-telegram-bot-api";
+import { supabase } from "./supabase.js";
 
 const TOKEN = "8434812242:AAHMguh1lLiH2kiuARLUKwTrCdM__oGlDfM";
 const CHANNEL_ID = "@tgchanel_fortest";
-const bot = new TelegramBot(TOKEN, { polling: false });
+const bot = new TelegramBot(TOKEN, { polling: true });
 
 bot.sendMessage(
   CHANNEL_ID,
@@ -10,25 +11,24 @@ bot.sendMessage(
   {
     reply_markup: {
       inline_keyboard: [
-        [
-          {
-						text: "Взяти участь ✅", 
-						callback_data: "participate" 
-            // text: "Взяти участь ✅",
-            // url: encodeURI("https://mrforestino.github.io/forTelegramBot/")
-          }
-        ]
+        [{ text: "Взяти участь ✅", callback_data: "participate" }]
       ]
     }
   }
 );
-bot.on("callback_query", (query) => {
-  const userId = query.from.id;
-  const username = query.from.username;
-  const firstName = query.from.first_name;
 
-  console.log("User clicked:", userId, username, firstName);
+bot.on("callback_query", async (query) => {
+  const user = query.from;
 
-  // можна надіслати підтвердження
-  bot.answerCallbackQuery(query.id, { text: "Ви зареєстровані!" });
+  // Запис у Supabase
+  const { error } = await supabase.from("contest_users").insert([{
+    telegram_id: user.id,
+    telegram_name: user.username || `${user.first_name} ${user.last_name || ""}`
+  }]);
+
+  if (error) {
+    console.error(error);
+  }
+
+  bot.answerCallbackQuery(query.id, { text: "✅ Ви зареєстровані!" });
 });
