@@ -9,8 +9,8 @@ const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.BOT_TOKEN;
 
 
-const CHANNEL_ID = "@tgchanel_fortest";
-// const CHANNEL_ID = "@Ideya68";
+// const CHANNEL_ID = "@tgchanel_fortest";
+const CHANNEL_ID = "@Ideya68";
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 bot.sendMessage(
