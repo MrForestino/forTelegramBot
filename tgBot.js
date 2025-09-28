@@ -13,7 +13,6 @@ const CHANNEL_ID = "@tgchanel_fortest";
 // const CHANNEL_ID = "@Ideya68";
 const bot = new TelegramBot(TOKEN, { polling: true });
 
-bot.setWebHook(`https://fortelegrambot.onrender.com/bot${TOKEN}`);
 bot.sendMessage(
   CHANNEL_ID,
   "🎉 Розыгрыш! Нажми кнопку, чтобы принять участие:",
@@ -41,19 +40,10 @@ bot.on("callback_query", async (query) => {
 
   bot.answerCallbackQuery(query.id, { text: "✅Вы зарегистрированы!" });
 });
-app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("✅ Telegram bot is running on Render!");
-})
-app.post(`/bot${TOKEN}`, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
 });
-
-// app.listen(10000, () => {
-//   console.log("Webhook server is running");
-// });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
